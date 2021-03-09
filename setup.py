@@ -22,5 +22,5 @@ setup(
     },
     author="Joseph Hunkeler",
     author_email="jhunk@stsci.edu",
-    url="https://github.com/spactelescope/log_raider",
+    url="https://github.com/spacetelescope/log_raider",
 )
