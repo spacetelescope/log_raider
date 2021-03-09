@@ -10,6 +10,11 @@ setup(
     setup_requires=[
         "setuptools_scm",
     ],
+    extras_require={
+        "test": [
+            "pytest",
+        ],
+    },
     entry_points={
         "console_scripts": [
             "log_raider_jenkins = log_raider.cli.jenkins:main",
