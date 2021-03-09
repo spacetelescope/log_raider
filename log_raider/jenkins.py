@@ -61,6 +61,7 @@ def parse_log(filename):
     master_log = False
     last_name = ""
     last_type = ""
+    last_line = 0
     section = section_defaults.copy()
     result = list()
 
@@ -88,7 +89,7 @@ def parse_log(filename):
             if not block["type"]:
                 block["type"] = last_type
             block["depth"] = depth
-            block["line"] = lineno
+            block["line"] = last_line
             result.append(block)
             block = section_defaults.copy()
         return block
@@ -149,6 +150,7 @@ def parse_log(filename):
                 printv("TYPE  ::", section["type"])
 
             # Finished with [Pipeline] data for now... see if there's more
+            last_line = lineno
             continue
 
         if not depth and not is_pipeline(line):
