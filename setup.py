@@ -12,7 +12,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "log_raider_jenkins = log_raider.jenkins:main",
+            "log_raider_jenkins = log_raider.cli.jenkins:main",
         ],
     },
     author="Joseph Hunkeler",

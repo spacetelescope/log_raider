@@ -1,8 +1,5 @@
-import argparse
-import json
-import os
 import sys
-from . import __version__
+
 
 PIPELINE_VERBOSE = False
 PIPELINE_MARKER = "[Pipeline]"
@@ -11,6 +8,16 @@ PIPELINE_BLOCK_END = '}'
 PIPELINE_BLOCK_START_NOTE = '('
 PIPELINE_BLOCK_START_NOTE_END = ')'
 PIPELINE_BLOCK_END_NOTE = "//"
+
+
+def verbose_enable():
+    global PIPELINE_VERBOSE
+    PIPELINE_VERBOSE = True
+
+
+def verbose_disable():
+    global PIPELINE_VERBOSE
+    PIPELINE_VERBOSE = False
 
 
 def consume_token(s, token, l_trunc=0, r_trunc=0, strip_leading=True):
@@ -34,7 +41,8 @@ def consume_token(s, token, l_trunc=0, r_trunc=0, strip_leading=True):
 
 def printv(*args, **kwargs):
     if PIPELINE_VERBOSE:
-        print(*args, *kwargs)
+        kwargs["file"] = sys.stderr
+        print(*args, **kwargs)
 
 
 def parse_log(filename):
@@ -161,37 +169,3 @@ def parse_log(filename):
     commit(section)
 
     return result
-
-
-def main():
-    global PIPELINE_VERBOSE
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-j", "--json", action="store_true", help="Emit JSON")
-    parser.add_argument("-v", "--verbose", action="store_true", help="Increase verbosity")
-    parser.add_argument("-V", "--version", action="store_true", help="Show version")
-    parser.add_argument("logfile", nargs='?')
-
-    args = parser.parse_args()
-
-    if args.version:
-        print(__version__)
-        exit(0)
-
-    if not os.path.exists(args.logfile):
-        print(f"{args.logfile}: does not exist")
-
-    PIPELINE_VERBOSE = args.verbose
-    data = parse_log(args.logfile)
-
-    if args.json:
-        print(json.dumps(data, indent=2))
-    else:
-        for x in data:
-            print("#" * 79)
-            print(f"{x['type']} - {x['name']} (line @ {x['line']})")
-            print("#" * 79)
-            print(f"{x['data']}")
-
-
-if __name__ == "__main__":
-    sys.exit(main())
