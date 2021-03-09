@@ -27,6 +27,7 @@ def main():
 
     if not os.path.exists(args.logfile):
         print(f"{args.logfile}: does not exist")
+        exit(1)
 
     if args.verbose:
         jenkins.verbose_enable()
